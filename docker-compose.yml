@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # Directus CMS
+  directus:
+    image: directus/directus:latest
+    ports:
+      - "8055:8055"
+    volumes:
+      - ./directus/database:/directus/database
+      - ./directus/uploads:/directus/uploads
+      - ./directus/extensions:/directus/extensions
+    environment:
+      KEY: '255d861b-5ea1-5996-9aa3-922530ec40b1'
+      SECRET: '6116487b-cda1-52c2-b5b5-c8022c45e263'
+      
+      DB_CLIENT: 'sqlite3'
+      DB_FILENAME: '/directus/database/data.db'
+      
+      ADMIN_EMAIL: 'admin@cejef.ch'
+      ADMIN_PASSWORD: 'admin123'
+      
+      PUBLIC_URL: 'http://localhost:8055'
+      CORS_ENABLED: 'true'
+      CORS_ORIGIN: 'true'
+      
+    restart: unless-stopped
+    networks:
+      - cejef-network
+
+  # Nuxt.js Application
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NUXT_PUBLIC_DIRECTUS_URL=http://directus:8055
+    depends_on:
+      - directus
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run dev
+    restart: unless-stopped
+    networks:
+      - cejef-network
+
+networks:
+  cejef-network:
+    driver: bridge
+
+volumes:
+  directus-database:
+  directus-uploads:
