@@ -21,19 +21,19 @@ const actualites = [
 	{
 		title: 'Développement d’un nouveau site CEJEF',
 		description: 'Le CNS développe actuellement un site pour tout le CEJEF !',
-		image: new URL('../assets/img/Actualites_image_2.webp', import.meta.url).href,
+		image: '../assets/img/Actualites_image_2.webp',
 		to: '/actualites/developpement-nouveau-site-cejef'
 	},
 	{
 		title: 'Actualité 3',
 		description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor.',
-		image: new URL('../assets/img/Actualites_image_3.webp', import.meta.url).href,
+		image: '../assets/img/Actualites_image_3.webp',
 		to: '/actualites/actualite-3'
 	},
 	{
 		title: 'Actualité 2',
 		description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus viverra nulla ut metus.',
-		image: new URL('../assets/img/Actualites_image_2.webp', import.meta.url).href,
+		image: '../assets/img/Actualites_image_2.webp',
 		to: '/actualites/actualite-2'
 	}
 ]
