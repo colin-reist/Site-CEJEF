@@ -1,0 +1,88 @@
+# Nom du workflow affiché dans l'onglet Actions de GitHub
+name: Deploy to GitHub Pages (Staging)
+
+# Déclencheurs : quand ce workflow s'exécute-t-il ?
+on:
+  # Se déclenche automatiquement à chaque push sur la branche main
+  push:
+    branches: ["main"]
+
+  # Permet de déclencher manuellement depuis l'onglet Actions
+  workflow_dispatch:
+
+# Permissions nécessaires pour déployer sur GitHub Pages
+# GitHub crée automatiquement un jeton (GITHUB_TOKEN) avec ces permissions
+permissions:
+  contents: read      # Lire le code du dépôt
+  pages: write        # Écrire sur GitHub Pages
+  id-token: write     # Créer un jeton d'identité (sécurité)
+
+# Gestion de la concurrence : évite les déploiements simultanés
+concurrency:
+  group: "pages"                  # Groupe tous les déploiements Pages ensemble
+  cancel-in-progress: false       # Ne pas annuler un déploiement en cours
+
+# Jobs : tâches à exécuter (ici 2 jobs : build et deploy)
+jobs:
+  # ========================================
+  # JOB 1 : Construire le site statique
+  # ========================================
+  build:
+    # Système d'exploitation de la machine virtuelle
+    runs-on: ubuntu-latest
+
+    # Liste des étapes à exécuter dans l'ordre
+    steps:
+      # Étape 1 : Récupérer le code source du dépôt
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Étape 2 : Installer Node.js (nécessaire pour Nuxt)
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"    # Version LTS de Node.js
+          cache: 'npm'          # Cache les dépendances npm pour accélérer
+
+      # Étape 3 : Installer les dépendances du projet
+      # npm ci = installation propre basée sur package-lock.json
+      - name: Install dependencies
+        run: npm ci
+
+      # Étape 4 : Générer le site statique (HTML/CSS/JS)
+      # Nuxt crée les fichiers dans .output/public/
+      - name: Static HTML export with Nuxt
+        run: npm run generate
+        env:
+          # IMPORTANT : Définit le sous-dossier pour GitHub Pages
+          NUXT_APP_BASE_URL: /Site-CEJEF/
+
+      # Étape 5 : Créer une archive (artifact) des fichiers générés
+      # Cette archive sera utilisée par le job de déploiement
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./.output/public    # Dossier contenant le site généré
+
+  # ========================================
+  # JOB 2 : Déployer sur GitHub Pages
+  # ========================================
+  deploy:
+    # Configuration de l'environnement
+    environment:
+      name: github-pages                              # Nom de l'environnement
+      url: ${{ steps.deployment.outputs.page_url }}   # URL du site déployé
+
+    # Système d'exploitation
+    runs-on: ubuntu-latest
+
+    # Ce job ne démarre qu'après la réussite du job 'build'
+    needs: build
+
+    # Étapes du déploiement
+    steps:
+      # Étape unique : Déployer l'artifact sur GitHub Pages
+      # GitHub hébergera alors le site à l'URL configurée
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
