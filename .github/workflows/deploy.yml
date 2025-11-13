@@ -1,34 +1,21 @@
-name: Deploy to GitHub Pages
+name: Deploy Nuxt to GitHub Pages
 
 on:
   push:
-    branches:
-      - main
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: github-pages
-  cancel-in-progress: true
+    branches: [ "main" ]
 
 jobs:
-  build:
+  build-deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: CEJEF
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Expose package manifest at workspace root
-        run: |
-          cp CEJEF/package.json ./package.json
-          cp CEJEF/package-lock.json ./package-lock.json
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -36,25 +23,17 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
+        working-directory: ./CEJEF
         run: npm ci
 
-      - name: Generate static site
-        env:
-          NITRO_PRESET: github-pages
-        run: npm run generate
+      - name: Build project
+        working-directory: ./CEJEF
+        run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: CEJEF/.output/public
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
       - name: Deploy to GitHub Pages
-        id: deployment
         uses: actions/deploy-pages@v4
