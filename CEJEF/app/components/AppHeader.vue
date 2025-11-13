@@ -32,12 +32,12 @@ const items = computed<NavigationMenuItem[]>(() => [
 <template>
   <UHeader title="" class="p-10 px-4 sm:px-6 lg:px-8 ml-5">
       <template #left>
-        <Logo class="h-12 w-auto" />
+        <Logo class="h-11"/>
       </template>
       <UNavigationMenu :items="items" class=""/>
       <template #right>
-        <UColorModeButton/>
         <UButton variant="solid" size="md" class="ml-4 p-2.5" href="/nos-formations" target="_blank">NOS FORMATIONS</UButton>
+        <UColorModeButton/>
       </template>
   </UHeader>
 </template>
