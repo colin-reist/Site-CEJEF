@@ -1,4 +1,4 @@
-const repoBase = '/Site-CEJEF/'
+const repoBase = '/CEJEF/'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
