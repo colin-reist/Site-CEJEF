@@ -69,5 +69,17 @@ export default defineNuxtConfig({
         braceStyle: '1tbs'      // Style d'accolades "One True Brace Style"
       }
     }
+  },
+
+  // ========================================
+  // CONFIGURATION NITRO
+  // ========================================
+  // Nitro : Moteur de rendu et de déploiement de Nuxt
+  // Configuration pour la génération de site statique
+  nitro: {
+    preset: 'static',
+    prerender: {
+      failOnError: false
+    }
   }
 })
