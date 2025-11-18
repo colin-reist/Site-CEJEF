@@ -182,19 +182,23 @@ const handleSubmit = () => {
 <template>
 	<div>
 		<UPageHero
-			title="Bienvenue a la division Sante Social Art"
-			description="Le futur de la sante jurassienne"
+			description="Le futur de la santé jurassienne"
 			class="pt-px"
 			orientation="horizontal"
 			:links="links"
 		>
+			<template #title>
+				<div class="leading-tight">
+					<span class="block">Bienvenue à la division</span>
+					<span class="block whitespace-nowrap text-primary">Santé Social Art</span>
+				</div>
+			</template>
 			<img :src="heroImage" alt="Division image"
 				class="hidden md:block object-cover rounded-lg shadow-md size-hero slideUp" />
 		</UPageHero>
 
-		<h1 class="text-5xl text-center mb-5">Agenda</h1>
-		<USeparator color="primary" size="lg" class="w-100 m-auto" />
-		<section class="my-16 flex flex-col gap-16 px-4 md:flex-row">
+		<section class="my-16 flex-column flex-column gap-16 px-4 md:flex-column bg-primary-50 py-8 dark:bg-transparent">
+			<h1 class="pb-5 text-5xl text-center mb-5">Agenda</h1>
 			<div class="mx-auto grid max-w-6xl gap-8 md:grid-cols-2 xl:grid-cols-3">
 				<AppAgendaCard
 					v-for="item in agendaItems"
@@ -204,9 +208,8 @@ const handleSubmit = () => {
 			</div>
 		</section>
 
-		<h1 class="text-5xl text-center mb-5">Actualites</h1>
-		<USeparator color="primary" size="lg" class="w-100 m-auto" />
 		<section class="my-16 px-4">
+			<h1 class="pb-5 text-5xl text-center mb-5">Actualites</h1>
 			<div class="mx-auto grid max-w-6xl gap-8 md:grid-cols-2 xl:grid-cols-3">
 				<AppNewsCard
 					v-for="item in actualites"
@@ -216,10 +219,9 @@ const handleSubmit = () => {
 			</div>
 		</section>
 
-		<h1 class="text-5xl text-center mb-5">Nous contacter</h1>
-		<USeparator color="primary" size="lg" class="w-100 m-auto" />
-		<section class="my-16 px-4">
-			<div class="mx-auto max-w-6xl rounded-[32px] border-4 border-primary bg-white px-8 py-12 shadow-sm">
+		<section class="my-16 px-4 bg-primary-50 dark:bg-transparent py-8 mb-0">
+			<h1 class="pb-5 text-5xl text-center mb-5">Nous contacter</h1>
+			<div class="mx-auto max-w-6xl rounded-4xl border-4 border-primary bg-white px-8 py-12 shadow-sm">
 				<div class="grid gap-10 lg:grid-cols-2">
 					<form class="space-y-5" @submit.prevent="handleSubmit" novalidate>
 						<div>
@@ -334,19 +336,7 @@ const handleSubmit = () => {
 								</a>
 							</li>
 						</ul>
-						<div class="mt-8 flex flex-wrap gap-4">
-							<a
-								v-for="social in socialLinks"
-								:key="social.label"
-								:href="social.href"
-								target="_blank"
-								rel="noreferrer"
-								class="flex h-12 w-12 items-center justify-center rounded-full border border-primary text-primary transition hover:bg-primary hover:text-slate-900"
-								:aria-label="social.label"
-							>
-								<span :class="social.icon"></span>
-							</a>
-						</div>
+						<AppSocialLinks class="mt-8" />
 					</div>
 				</div>
 			</div>

@@ -7,10 +7,9 @@ export default defineNuxtConfig({
   // MODULES NUXT
   // ========================================
   // Modules = extensions qui ajoutent des fonctionnalités à Nuxt
-  modules: [
-    '@nuxt/eslint',  // Vérification de la qualité du code (linting)
-    '@nuxt/ui'       // Bibliothèque de composants UI pré-stylés
-  ],
+  modules: [// Vérification de la qualité du code (linting)
+  // Bibliothèque de composants UI pré-stylés
+  '@nuxt/eslint', '@nuxt/ui', '@nuxt/icon', 'nuxt-directus'],
 
   // ========================================
   // CONFIGURATION DE L'APPLICATION
@@ -80,6 +79,17 @@ export default defineNuxtConfig({
     preset: 'static',
     prerender: {
       failOnError: false
+    }
+  },
+
+  runtimeConfig: {
+    directus: {
+      token: process.env.DIRECTUS_TOKEN || ''
+    },
+    public: {
+      directus: {
+        url: process.env.NUXT_PUBLIC_DIRECTUS_URL || 'http://localhost:8055'
+      }
     }
   }
 })
