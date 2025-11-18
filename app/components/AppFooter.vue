@@ -1,6 +1,6 @@
 <template>
     <footer
-        class="mt-16 border-t-4 border-primary bg-slate-50/90 text-slate-800 backdrop-blur dark:bg-slate-900/60 dark:text-slate-100">
+        class=" border-t-4 border-primary bg-slate-50/90 text-slate-800 backdrop-blur dark:bg-slate-900/60 dark:text-slate-100">
         <div class="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-10 md:py-12">
             <div class="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
                 <div class="grid flex-1 grid-cols-1 gap-6 sm:grid-cols-2">
@@ -47,7 +47,7 @@
                 <div class="flex flex-1 gap-4 md:gap-6 self-center md:items-end">
                     <img src="../assets/img/ISO.webp" alt="Certification ISO 9001"
                         class="h-auto" />
-                    <div class="">
+                    <div class="self-center">
                         <img src="../assets/img/CEJEF_JU.png" alt="CEJEF JU" class="h-auto" />
                     </div>
                 </div>

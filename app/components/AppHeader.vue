@@ -7,12 +7,10 @@ const items = computed<NavigationMenuItem[]>(() => [
 	{
 		label: 'Accueil',
 		to: '/',
-		active: route.path.startsWith('/')
 	},
 	{
 		label: 'Campus',
 		to: '/campus',
-		active: route.path.startsWith('/campus')
 	},
 	{
 		label: 'Acutalités',
@@ -36,7 +34,9 @@ const items = computed<NavigationMenuItem[]>(() => [
 		</template>
 		<UNavigationMenu :items="items" class="" />
 		<template #right>
-			<UButton variant="solid" size="md" class="ml-4 p-2.5" href="/nos-formations" target="_blank">NOS FORMATIONS
+			<UButton variant="solid" size="md" class="ml-4 p-2.5" href="/formations" target="">NOS FORMATIONS
+			</UButton>
+			<UButton variant="subtle" color="neutral" size="md" class=" ml-4 p-2.5" href="/contact" target="">CONTACT
 			</UButton>
 			<UColorModeButton />
 		</template>

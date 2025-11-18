@@ -1,25 +1,21 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useNewsItem } from '../../../composables/useNews'
+import { mapNewsDetail } from '../../../domain/mappers/newsMapper'
 import fallbackImage from '~/assets/img/Actualites_image_2.webp'
 
 const route = useRoute()
 const runtimeConfig = useRuntimeConfig()
-const directusAssetBase = runtimeConfig.public.directusUrl?.replace(/\/$/, '')
+const directusAssetBase = runtimeConfig.public.directus?.url
 
-const { data, pending, error } = await useAsyncData(
-	() => $fetch(`/api/news/${route.params.slug}`),
-	{ watch: [() => route.params.slug] }
-)
+const { data, pending, error } = await useNewsItem(route.params.id as string)
 
-const coverImage = computed(() => {
-	if (data.value?.image && directusAssetBase) {
-		return `${directusAssetBase}/assets/${data.value.image}`
-	}
-	return fallbackImage
-})
+const mapped = computed(() => (data.value ? mapNewsDetail(data.value as any, directusAssetBase, fallbackImage) : null))
+
+const coverImage = computed(() => mapped.value?.image || fallbackImage)
 
 useHead(() => ({
-	title: data.value?.title ? `${data.value.title} | Actualites` : 'Actualite'
+	title: mapped.value?.title ? `${mapped.value.title} | Actualites` : 'Actualite'
 }))
 </script>
 
@@ -33,17 +29,14 @@ useHead(() => ({
 				Cette actualite n est pas disponible ou a ete retiree.
 			</div>
 			<article v-else>
-				<img :src="coverImage" :alt="data.title" class="mb-8 w-full rounded-[32px] object-cover shadow" />
-				<p class="text-sm uppercase tracking-wide text-slate-500">
-					{{ new Date(data.published_at || Date.now()).toLocaleDateString('fr-CH') }}
-				</p>
+				<img :src="coverImage" :alt="mapped?.title" class="mb-8 w-full rounded-[32px] object-cover shadow" />
 				<h1 class="mt-2 text-4xl font-bold text-slate-900">
-					{{ data.title }}
+					{{ mapped?.title }}
 				</h1>
 				<p class="mt-4 text-lg text-slate-600">
-					{{ data.description }}
+					{{ mapped?.description }}
 				</p>
-				<div class="prose prose-slate mt-8 max-w-none" v-html="data.body ?? ''" />
+				<div class="prose prose-slate mt-8 max-w-none" v-html="mapped?.body ?? ''" />
 				<NuxtLink to="/actualites" class="mt-12 inline-flex items-center text-primary hover:underline">
 					<span class="i-lucide-arrow-left mr-2 h-4 w-4"></span>
 					Retour aux actualites
