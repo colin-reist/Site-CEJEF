@@ -317,20 +317,20 @@ const handleSubmit = () => {
 						</p>
 					</form>
 					<div class="rounded-[28px] bg-slate-50 px-8 py-10 lg:bg-transparent lg:px-0 lg:py-0">
-						<h4 class="text-3xl font-bold text-slate-900">{{ contactDetails.title }}</h4>
+						<h4 class="text-3xl font-bold text-primary">{{ contactDetails.title }}</h4>
 						<ul class="mt-6 space-y-4 text-slate-700">
 							<li class="flex items-start gap-3">
-								<span class="i-lucide-map-pin h-5 w-5 text-primary"></span>
+								<UIcon name="i-lucide-map-pin" class="mt-0.5 text-primary" aria-hidden="true" />
 								<span>{{ contactDetails.address }}</span>
 							</li>
 							<li class="flex items-center gap-3">
-								<span class="i-lucide-phone h-5 w-5 text-primary"></span>
+								<UIcon name="i-lucide-phone" class="mt-0.5 text-primary" aria-hidden="true" />
 								<a :href="contactDetails.phoneHref" class="font-semibold text-slate-900 hover:text-primary">
 									{{ contactDetails.phoneLabel }}
 								</a>
 							</li>
 							<li class="flex items-center gap-3">
-								<span class="i-lucide-mail h-5 w-5 text-primary"></span>
+								<UIcon name="i-lucide-mail" class="mt-0.5 text-primary" aria-hidden="true" />
 								<a :href="contactDetails.emailHref" class="font-semibold text-slate-900 hover:text-primary">
 									{{ contactDetails.emailLabel }}
 								</a>
